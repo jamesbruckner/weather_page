@@ -10,8 +10,11 @@ function getInfo() {
     const newName = document.getElementById('cityInput')
     const cityName = document.getElementById('cityName')
     cityName.innerHTML = "--" + newName.value + "--"
-
-
+     let previousSearch = JSON.parse(localStorage.getItem("weathersearch")) || []
+     previousSearch.push(newName.value)
+     localStorage.setItem("weathersearch",JSON.stringify(previousSearch))
+     displayPreviousSearch()
+    getCurrentInfo(cityName.value)
     fetch("http://api.openweathermap.org/data/2.5/forecast?q=" + newName.value + "&appid=5e862054b41dab9c4995797f82a4b8ca&units=imperial")
         .then(response => response.json())
         .then(data => {
@@ -32,6 +35,16 @@ function getInfo() {
              alert('error',err)
             console.log(err)
             })
+}
+
+displayPreviousSearch()
+function displayPreviousSearch() {
+    let previousSearch = JSON.parse(localStorage.getItem("weathersearch")) || []
+    let buttonsHTML = ""
+    for(let i=0;i<previousSearch.length;i++){
+        buttonsHTML += `<button>${previousSearch[i]}</button>`
+    }
+    document.getElementById('weather').innerHTML= buttonsHTML
 }
 
 function defaultScreen() {
@@ -56,7 +69,7 @@ function checkDay(day) {
 }
 
 
-function getCurrentInfo() {
+function getCurrentInfo(city) {
     const newName = document.getElementById('cityInput')
     const cityName = document.getElementById('cityName')
     cityName.innerHTML = "--" + newName.value + "--"
@@ -66,18 +79,16 @@ function getCurrentInfo() {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            for (let i = 1; i < 6; i++) {
-                let max = "day" + i + "max"
-                let min = "day" + i + 'min'
-                console.log(document.getElementById(max))
-                document.getElementById(min).innerText = "Low of:" + Number(data.list[i].main.temp_min - 264.52) + '°';
-            // }
-            // for (i = 0; i < 5; i++) {
-                document.getElementById(max).innerText = "High of:" + Number(data.list[i].main.temp_max - 264.52) + '°';
-            }
-            // for (i = 0; i < 5; i++) {
-            //     document.getElementById('img' + (i + 1)).src = " https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + '.png';
-            // }
+          
+                document.getElementById("currentForecast").innerHTML = `
+                <h3>${newName.value}</h3>
+                <p>Min temp:${data.main.temp_min} °
+                <img src ="https://openweathermap.org/img/wn/${data.weather[0].icon}.png" /></p>
+                <p>Max temp:${data.main.temp_max} °</p>
+                <p>Humidity:${data.main.humidity} %</p>
+                <p>Wind Speed:${data.wind.speed} mph</p>
+
+          `
         })
 
         .catch(err =>{
