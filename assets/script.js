@@ -9,13 +9,17 @@
 function getInfo() {
     const newName = document.getElementById('cityInput')
     const cityName = document.getElementById('cityName')
-    cityName.innerHTML = "--" + newName.value + "--"
+    // cityName.innerText = "--" + newName.value + "--"
      let previousSearch = JSON.parse(localStorage.getItem("weathersearch")) || []
      previousSearch.push(newName.value)
      localStorage.setItem("weathersearch",JSON.stringify(previousSearch))
      displayPreviousSearch()
-    getCurrentInfo(cityName.value)
-    fetch("http://api.openweathermap.org/data/2.5/forecast?q=" + newName.value + "&appid=5e862054b41dab9c4995797f82a4b8ca&units=imperial")
+    getCurrentInfo(newName.value)
+    getFiveDayInfo(newName.value)
+}
+
+function getFiveDayInfo(city){
+    fetch("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca&units=imperial")
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -32,7 +36,6 @@ function getInfo() {
         })
 
         .catch(err =>{
-             alert('error',err)
             console.log(err)
             })
 }
@@ -42,9 +45,11 @@ function displayPreviousSearch() {
     let previousSearch = JSON.parse(localStorage.getItem("weathersearch")) || []
     let buttonsHTML = ""
     for(let i=0;i<previousSearch.length;i++){
-        buttonsHTML += `<button>${previousSearch[i]}</button>`
+        buttonsHTML += `<button class="search">${previousSearch[i]}</button>`
     }
     document.getElementById('weather').innerHTML= buttonsHTML
+    var preSearch = document.querySelectorAll(".search")
+    preSearch.forEach(element => element.addEventListener("click",getPreviousSearch))
 }
 
 function defaultScreen() {
@@ -52,6 +57,11 @@ function defaultScreen() {
     getInfo();
 }
 
+function getPreviousSearch(event){
+  var city = event.target.innerText
+  getCurrentInfo(city)
+  getFiveDayInfo(city)
+}
 
 function checkDay(day) {
     const date = new Date();
@@ -70,18 +80,16 @@ function checkDay(day) {
 
 
 function getCurrentInfo(city) {
-    const newName = document.getElementById('cityInput')
-    const cityName = document.getElementById('cityName')
-    cityName.innerHTML = "--" + newName.value + "--"
+   
 
 
-    fetch("http://api.openweathermap.org/data/2.5/weather?q=" + newName.value + "&appid=5e862054b41dab9c4995797f82a4b8ca")
+    fetch("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca")
         .then(response => response.json())
         .then(data => {
             console.log(data)
           
                 document.getElementById("currentForecast").innerHTML = `
-                <h3>${newName.value}</h3>
+                <h3>${city}</h3>
                 <p>Min temp:${data.main.temp_min} °
                 <img src ="https://openweathermap.org/img/wn/${data.weather[0].icon}.png" /></p>
                 <p>Max temp:${data.main.temp_max} °</p>
@@ -92,7 +100,6 @@ function getCurrentInfo(city) {
         })
 
         .catch(err =>{
-             alert('error',err)
             console.log(err)
             })
 }
