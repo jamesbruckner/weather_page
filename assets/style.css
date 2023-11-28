@@ -5,10 +5,8 @@
     background-color: rgb(105, 232, 232);
 }
 
-#cityInput, #cityName, #inputContainer, button{
-margin: 3px;
-margin-left: 300px;
-margin-right: 300px;
+#cityInput, #cityName, #inputContainer, button {
+display: inline-block;
 padding: 5px;
 text-align: center;
 font-size: 20px;
@@ -42,8 +40,10 @@ font-weight: bold;
 }
 
 .icons{
-    display: inline-bock;
-    float: left;
+    display: inline-block;
+    /* align-items: center;
+    justify-content: center; */
+    margin-left: 300px;
     height: 200px;
     width: 190px;
     margin: 20px;
