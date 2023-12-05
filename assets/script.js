@@ -1,6 +1,6 @@
 var WeatherAPIKey = "5e862054b41dab9c4995797f82a4b8ca";
 var city;
-var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WeatherAPIKey;
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WeatherAPIKey;
 
 
 fetch(queryURL)
@@ -19,7 +19,7 @@ function getInfo() {
 }
 
 function getFiveDayInfo(city){
-    fetch("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca&units=imperial")
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca&units=imperial")
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -83,7 +83,7 @@ function getCurrentInfo(city) {
    
 
 
-    fetch("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca")
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=5e862054b41dab9c4995797f82a4b8ca")
         .then(response => response.json())
         .then(data => {
             console.log(data)
