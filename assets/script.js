@@ -1,9 +1,9 @@
-// var WeatherAPIKey = "5e862054b41dab9c4995797f82a4b8ca";
-// var city;
-// var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WeatherAPIKey;
+var WeatherAPIKey = "5e862054b41dab9c4995797f82a4b8ca";
+var city;
+var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + WeatherAPIKey;
 
 
-// fetch(queryURL)
+fetch(queryURL)
 
 
 function getInfo() {
